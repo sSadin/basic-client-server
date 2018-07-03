@@ -70,6 +70,7 @@ int main(int argc, char **argv)
 
   port = ntohs(rdma_get_src_port(listener));
 
+  printf("Process pid %d\n", getpid());
   printf("listening on port %d.\n", port);
 
   while (rdma_get_cm_event(ec, &event) == 0) {
