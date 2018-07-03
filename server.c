@@ -61,6 +61,7 @@ int main(int argc, char **argv)
   addr.sin6_family = AF_INET6;
 #else
   addr.sin_family = AF_INET;
+  addr.sin_port = 98765;	// TODO: may be not read but set listening port?
 #endif
 
   TEST_Z(ec = rdma_create_event_channel());
@@ -68,7 +69,7 @@ int main(int argc, char **argv)
   TEST_NZ(rdma_bind_addr(listener, (struct sockaddr *)&addr));
   TEST_NZ(rdma_listen(listener, 10)); /* backlog=10 is arbitrary */
 
-  port = ntohs(rdma_get_src_port(listener));
+  port = ntohs(rdma_get_src_port(listener)); // TODO: may be not read but set listening port?
 
   printf("Process pid %d\n", getpid());
   printf("listening on port %d.\n", port);
