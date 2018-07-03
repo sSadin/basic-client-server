@@ -60,6 +60,8 @@ int main(int argc, char **argv)
   if (argc != 3)
     die("usage: client <server-address> <server-port>");
 
+  printf("Process pid %d\n", getpid());
+
   TEST_NZ(getaddrinfo(argv[1], argv[2], NULL, &addr));
 
   TEST_Z(ec = rdma_create_event_channel());
