@@ -61,7 +61,7 @@ int main(int argc, char **argv)
   addr.sin6_family = AF_INET6;
 #else
   addr.sin_family = AF_INET;
-  addr.sin_port = 60000;	// TODO: may be not read but set listening port?
+  addr.sin_port = htons(20079);	// TODO: may be not read but set listening port?
 #endif
 
   TEST_Z(ec = rdma_create_event_channel());
