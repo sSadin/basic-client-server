@@ -61,7 +61,7 @@ int main(int argc, char **argv)
   addr.sin6_family = AF_INET6;
 #else
   addr.sin_family = AF_INET;
-  addr.sin_port = htons(20079);	// TODO: may be not read but set listening port?
+  addr.sin_port = htons(20079); // TODO: read from config
 #endif
 
   TEST_Z(ec = rdma_create_event_channel());
@@ -69,7 +69,7 @@ int main(int argc, char **argv)
   TEST_NZ(rdma_bind_addr(listener, (struct sockaddr *)&addr));
   TEST_NZ(rdma_listen(listener, 10)); /* backlog=10 is arbitrary */
 
-  port = ntohs(rdma_get_src_port(listener)); // TODO: may be not read but set listening port?
+  port = ntohs(rdma_get_src_port(listener));
 
   printf("Process pid %d\n", getpid());
   printf("listening on port %d.\n", port);
@@ -274,12 +274,18 @@ int on_event(struct rdma_cm_event *event)
 {
   int r = 0;
 
-  if (event->event == RDMA_CM_EVENT_CONNECT_REQUEST)
+  if (event->event == RDMA_CM_EVENT_CONNECT_REQUEST) {
+    printf("RDMA_CM_EVENT_CONNECT_REQUEST\n");
     r = on_connect_request(event->id);
-  else if (event->event == RDMA_CM_EVENT_ESTABLISHED)
+  }
+  else if (event->event == RDMA_CM_EVENT_ESTABLISHED) {
+    printf("RDMA_CM_EVENT_ESTABLISHED\n");
     r = on_connection(event->id->context);
-  else if (event->event == RDMA_CM_EVENT_DISCONNECTED)
+  }
+  else if (event->event == RDMA_CM_EVENT_DISCONNECTED) {
+    printf("RDMA_CM_EVENT_DISCONNECTED\n");
     r = on_disconnect(event->id);
+  }
   else
     die("on_event: unknown event.");
 

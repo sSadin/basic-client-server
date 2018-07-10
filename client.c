@@ -274,14 +274,22 @@ int on_event(struct rdma_cm_event *event)
 {
   int r = 0;
 
-  if (event->event == RDMA_CM_EVENT_ADDR_RESOLVED)
+  if (event->event == RDMA_CM_EVENT_ADDR_RESOLVED) {
+    printf("RDMA_CM_EVENT_ADDR_RESOLVED\n");
     r = on_addr_resolved(event->id);
-  else if (event->event == RDMA_CM_EVENT_ROUTE_RESOLVED)
+  }
+  else if (event->event == RDMA_CM_EVENT_ROUTE_RESOLVED) {
+    printf("RDMA_CM_EVENT_ROUTE_RESOLVED\n");
     r = on_route_resolved(event->id);
-  else if (event->event == RDMA_CM_EVENT_ESTABLISHED)
+  }
+  else if (event->event == RDMA_CM_EVENT_ESTABLISHED) {
+    printf("RDMA_CM_EVENT_ESTABLISHED\n");
     r = on_connection(event->id->context);
-  else if (event->event == RDMA_CM_EVENT_DISCONNECTED)
+  }
+  else if (event->event == RDMA_CM_EVENT_DISCONNECTED) {
+    printf("RDMA_CM_EVENT_DISCONNECTED\n");
     r = on_disconnect(event->id);
+  }
   else
     die("on_event: unknown event.");
 
